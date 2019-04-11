@@ -4,6 +4,8 @@
 ==================================
 
 Covariance matrices are computed and saved.
+Here, the baseline interval, from the start of the epoch to time point 0
+is taken to compute covariance. 
 """
 
 import os.path as op

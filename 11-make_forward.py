@@ -4,6 +4,9 @@
 ====================
 
 Calculate forward solution for MEG channels.
+For this you need to have your evokeds [...]
+and trans file for each subject, which you get from coregistering 
+your MEG and MRIs. 
 """
 
 import os.path as op
