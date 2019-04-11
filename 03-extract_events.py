@@ -13,6 +13,7 @@ by resampling.
 import os.path as op
 
 import mne
+import numpy as np
 from mne.parallel import parallel_func
 
 import config
@@ -29,7 +30,22 @@ def run_events(subject):
         eve_fname_out = op.splitext(raw_fname_in)[0] + '-eve.fif'
 
         raw = mne.io.read_raw_fif(raw_fname_in)
-        events = mne.find_events(raw, stim_channel=config.stim_channel)
+        
+        events = mne.find_events(raw, stim_channel=config.stim_channel, 
+                                 consecutive=True, 
+                                 min_duration=config.min_event_duration, 
+                                 shortest_event=1)
+        # XXX shortest event?
+        
+        # XXX shift events by trigger
+        if config.trigger_offset:
+            events = mne.event.shift_time_events(
+                    events,
+                    np.unique(events[:,2]),
+                    config.trigger_offset,
+                    raw.info['sfreq'],
+                    )
+
 
         print("Input: ", raw_fname_in)
         print("Output: ", eve_fname_out)

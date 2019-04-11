@@ -16,14 +16,17 @@ from mne.datasets import sample
 # execute %matplotlib qt in your command line once to show the figures in
 # separate windows
 
-plot = False
+plot = True
+# execute %matplotlib qt 
+# in the command line to get the plots in extra windows
 
 ###############################################################################
 # DIRECTORIES
 # -----------
 # Let's set the `study path`` where the data is stored on your system
 # study_path = '../MNE-sample-data/'
-study_path = sample.data_path()
+# on windows: study_path = '\Users\sophie\repos\ExampleData\'
+study_path = '/Users/sophie/repos/ExampleData/'
 
 # The ``subjects_dir`` and ``meg_dir`` for reading anatomical and MEG files.
 subjects_dir = os.path.join(study_path, 'subjects')
@@ -37,13 +40,13 @@ meg_dir = os.path.join(study_path, 'MEG')
 # named my_study_path/MEG/my_subject/
 
 # This is the name of your experimnet
-study_name = 'audvis'
+study_name = 'Localizer'
 
 # To define the list of participants, we use a list with all the anonymized participant names. Even if 
 # you plan on analyzing a single participant, it needs to be set up as a list with a single element,
 # as in the 'example'
 
-subjects_list = ['sample']
+subjects_list = ['SB01'] # ,'SB02', 'SB03'
 # subjects_list = ['subject_01', 'subject_02', 'subject_03', 'subject_05',
 #                  'subject_06', 'subject_08', 'subject_09', 'subject_10',
 #                  'subject_11', 'subject_12', 'subject_14']
@@ -59,8 +62,13 @@ exclude_subjects = []  # ['subject_01']
 # if there are less runs than is expected. If there is only just one file, leave empty!
 runs = [''] # ['run01', 'run02']
 
-# This generates the name for all files with the names specified above
-# Typically, you shouldn't have to modify this if you have been consistent in your naming convention
+
+# does the data have EEG?
+eeg = False # True
+
+# This generates the name for all files
+# with the names specified above
+# normally you should not have to touch this
 base_fname = '{subject}_' + study_name + '{extension}.fif'
 
 ###############################################################################
@@ -72,11 +80,13 @@ base_fname = '{subject}_' + study_name + '{extension}.fif'
 # Here, put the number of runs you ideally expect to have per participant.
 # Use the simple dict if you don't have runs or if the same sensors are noisy across all runs
 
-bads = dict(sample=['MEG 2443', 'EEG 053'])
+bads = dict(SB01=['MEG1723','MEG1722'],
+            SB02=[],
+            SB03=[],
+            )
 
 # Use the dict(dict) if you have many runs or if noisy sensors are changing across runs 
-# bads = dict(sample=dict(run01=['MEG 2443', 'EEG 053'],
-#                         run02=['MEG 2443', 'EEG 053', 'EEG 013']))
+# bads = dict(SB01=dict(run01=['MEG 2443', 'EEG 053'],
 
 ###############################################################################
 # DEFINE ADDITIONAL CHANNELS
@@ -117,17 +127,17 @@ rename_channels = None
 
 # ``l_freq``  : the low-frequency cut-off in the highpass filtering step.
 # Keep it None if no highpass filtering should be applied.
-l_freq = None
+l_freq = 1.
 
 # ``h_freq``  : the high-frequency cut-off in the lowpass filtering step.
 # Keep it None if no lowpass filtering should be applied.
-h_freq = None
-
+h_freq = 40.
 
 ###############################################################################
 # MAXFILTER PARAMETERS
 # -------------------
 #
+
 # Download the ``cross talk`` and ``calibration`` files. Warning: these are site and machine specific files
 # that provide information about the environmental noise.
 # For practical purposes, place them in your study folder.
@@ -142,8 +152,6 @@ mf_cal_fname = os.path.join(study_path, 'SSS', 'sss_cal_nspn.dat')
 # recording session. Hence, to take this into account, we are realigning all data to a single
 # position. For this, you need to define a reference run (typically the one in the middle of 
 # the recording session). 
-# ``mf_reference_run `` : defines the reference run used to adjust the head position for
-# all other runs
 mf_reference_run = 0  # here, take 1st run as reference for head position
 
 # Set the origin for the head position
@@ -156,9 +164,8 @@ mf_head_origin = 'auto'
 # If you are interested in low frequency activity (<0.1Hz), avoid using tsss and set mf_st_duration = None
 # If you are interested in low frequency above 0.1 Hz, you can use the default mf_st_duration = 10 s
 # Elekta default = 10s, meaning it acts like a 0.1 Hz highpass filter
-#
 # ``mf_st_duration `` : if None, no temporal-spatial filtering is applied during MaxFilter,
-# otherwise, put a float that speficifies the buffer duration in seconds,
+# otherwise, put a float that speficifies the buffer duration in seconds
 mf_st_duration = None
 
 ###############################################################################
@@ -173,7 +180,7 @@ mf_st_duration = None
 #
 # ``resample_sfreq``  : a float that specifies at which sampling frequency
 # the data should be resampled. If None then no resampling will be done.
-resample_sfreq = None
+resample_sfreq =  500. # None
 
 
 # ``decim`` : integer that says how much to decimate data at the epochs level.
@@ -193,36 +200,49 @@ decim = 1
 # This allows to remove strong transient artifacts.
 # If you want to reject and retrieve blinks later, e.g. with ICA, don't specify
 # a value for the eog channel (see examples below).
+# Make sure to include values for eeg if you have eeg data
+
 # **Note**: these numbers tend to vary between subjects.
 # Examples:
 # reject = {'grad': 4000e-13, 'mag': 4e-12, 'eog': 150e-6}
+# reject = {'grad': 4000e-13, 'mag': 4e-12, 'eeg': 200e-6}
 # reject = None
 
-reject = {'grad': 4000e-13, 'mag': 4e-12, 'eeg': 200e-6}
+reject = {'grad': 4000e-13, 'mag': 4e-12}
 
 ###############################################################################
 # EPOCHING
 # --------
 #
 # ``tmin``: float that gives the start time before event of an epoch.
-tmin = -0.2
+tmin = -0.6
 
 #  ``tmax`` : float that gives the end time after event of an epochs.
-tmax = 0.5
+tmax = 1.5
+
+# float specifying the offset for the trigger and the stimulus (in seconds)
+# you need to measure this value for your specific experiment/setup
+trigger_offset = -0.0416
+# XXX forward/delay all triggers by this value
 
 # ``baseline`` : tuple that specifies how to baseline the epochs; if None,
 # no baseline is applied
-
-baseline = (None, 0.)
+baseline = (-.6, -.1) # (None, 0.)
 
 # stimulus channel, which contains the events
-stim_channel = None  # 'STI014'# 'STI101'
+stim_channel = 'STI101'  # 'STI014'# None
+
+# minimal duration of the events you want to extract
+min_event_duration = 0.002
 
 #  `event_id`` : python dictionary that maps events (trigger/marker values)
 # to conditions. E.g. `event_id = {'Auditory/Left': 1, 'Auditory/Right': 2}`
-event_id = {'Auditory/Left': 1, 'Auditory/Right': 2,
-            'Visual/Left': 3, 'Visual/Right': 4}
-conditions = ['Auditory', 'Visual', 'Right', 'Left']
+# event_id = {'Onset': 4}
+# conditions = ['Onset']
+
+event_id = {'incoherent_1': 33, 'incoherent_2': 35,
+            'coherent_down': 37, 'coherent_up': 39}
+conditions = ['incoherent_1', 'incoherent_2', 'coherent_down', 'coherent_up']
 
 ###############################################################################
 # ICA PARAMETERS
@@ -230,7 +250,7 @@ conditions = ['Auditory', 'Visual', 'Right', 'Left']
 # ``runica`` : boolean that says if ICA should be used or not.
 runica = True
 
-rejcomps_man = dict(sample=dict(meg=[],
+rejcomps_man = dict(SB01=dict(meg=[],
                                 eeg=[]))
 
 
