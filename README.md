@@ -1,5 +1,12 @@
 [![CircleCI](https://circleci.com/gh/brainthemind/CogBrainDyn_MEG_Pipeline.svg?style=svg)](https://circleci.com/gh/brainthemind/CogBrainDyn_MEG_Pipeline)
 
+
+
+Misc info to put somehwere
+Sampling, Nyquist, Aliasing: https://youtu.be/Fy9dJgGCWZI
+
+
+
 Study analysis template with MNE
 ================================
 
