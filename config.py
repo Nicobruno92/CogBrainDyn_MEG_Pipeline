@@ -285,6 +285,7 @@ runica = True
 def default_reject_comps():
     return dict(meg=[], eeg=[])
 
+
 rejcomps_man = defaultdict(default_reject_comps)
 
 # To populate this you can use:
