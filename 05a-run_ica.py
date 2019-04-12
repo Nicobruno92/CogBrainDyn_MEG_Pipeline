@@ -84,12 +84,12 @@ def run_ica(subject, tsss=config.mf_st_duration):
     n_components_meg = 0.999
 
     n_components = {'meg': n_components_meg, 'eeg': 0.999}
-    
+
     if config.eeg:
         ch_types = ['meg', 'eeg']
     else:
         ch_types = ['meg']
-    
+
     for ch_type in ch_types:
         print('Running ICA for ' + ch_type)
 
@@ -116,18 +116,17 @@ def run_ica(subject, tsss=config.mf_st_duration):
                                                                 ch_type))
             report = Report(report_name, verbose=False)
 
+            for idx in range(0, ica.n_components_):
 
-            for idx in range(0,ica.n_components_):
-            
                 figure = ica.plot_properties(epochs_for_ica,
-                                              picks=idx,
-                                              psd_args={'fmax': 60},
-                                              show=False)
+                                             picks=idx,
+                                             psd_args={'fmax': 60},
+                                             show=False)
 
                 report.add_figs_to_section(figure, section=subject,
                                            captions=(ch_type.upper() +
-                                                     ' - ICA Components'))                
- 
+                                                     ' - ICA Components'))
+
             report.save(report_name, overwrite=True, open_browser=False)
 
 
