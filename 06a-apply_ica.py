@@ -57,10 +57,11 @@ def apply_ica(subject):
                                eog=False, stim=False, exclude='bads')
     all_picks = {'meg': picks_meg, 'eeg': picks_eeg}
 
-    if config.eeg:
-        ch_types = ['meg', 'eeg']
-    else:
-        ch_types = ['meg']
+    ch_types = []
+    if 'eeg' in config.ch_types:
+        ch_types.append('eeg')
+    if set(config.ch_types).intersection(('meg', 'grad', 'mag')):
+        ch_types.append('meg')
 
     for ch_type in ch_types:
         print(ch_type)
@@ -192,5 +193,6 @@ def apply_ica(subject):
                               cmap="YlGnBu_r", show=config.plot)
 
 
-parallel, run_func, _ = parallel_func(apply_ica, n_jobs=config.N_JOBS)
-parallel(run_func(subject) for subject in config.subjects_list)
+if config.use_ica:
+    parallel, run_func, _ = parallel_func(apply_ica, n_jobs=config.N_JOBS)
+    parallel(run_func(subject) for subject in config.subjects_list)
