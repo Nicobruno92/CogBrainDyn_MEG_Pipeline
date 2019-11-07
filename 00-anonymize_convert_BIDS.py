@@ -15,17 +15,18 @@ import mne
 from mne_bids import write_raw_bids, make_bids_basename, write_anat
  
 base_path = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/MEG/'
-subjects = ['SB01', 'SB02','SB03','SB04','SB05','SB06','SB07','SB08','SB09',
-            'SB010','SB11','SB12']
+subjects = ['SB01']
+# subjects = ['SB01', 'SB02','SB03','SB04','SB05','SB06','SB07','SB08','SB09','SB10','SB11','SB12']
+
 tasks = ['Localizer']
 
-bids_root = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/MEG-bids/'
+bids_root = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/BIDS/'
 subjects_dir = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/MRI/'
 trans_dir =  '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/MEG/trans/'
  
 for ss, subject in enumerate(subjects):
     t1w = subjects_dir + "/%s/mri/T1.mgz" % subject
-    trans = trans_dir + '/sub-%s-trans.fif' % subject
+    trans = trans_dir + '/%s/Coregistration-trans.fif' % subject
     # Take care of MEG
     for task in tasks:
         raw_fname = op.join(base_path, subject, '%s_raw.fif' % task)
@@ -40,6 +41,6 @@ for ss, subject in enumerate(subjects):
                        overwrite=True)
  
     # Take care of anatomy
-#    write_anat(bids_root, subject, t1w, acquisition="t1w",
-#               trans=trans, raw=raw, overwrite=True)        
+    write_anat(bids_root, subject, t1w, acquisition="t1w",
+               trans=trans, raw=raw, overwrite=True)        
 
