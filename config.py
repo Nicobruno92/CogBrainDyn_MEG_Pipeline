@@ -32,12 +32,12 @@ plot = False
 # or
 # >>> study_path = '/Users/sophie/repos/ExampleData/'
 
-study_path = 'data/'
+study_path = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/'# 'data/'
 
 # ``subjects_dir`` : str
 #   The ``subjects_dir`` contains the MRI files for all subjects.
 
-subjects_dir = os.path.join(study_path, 'subjects')
+subjects_dir = os.path.join(study_path, 'MRI')
 
 # ``meg_dir`` : str
 #   The ``meg_dir`` contains the MEG data in subfolders
@@ -634,14 +634,14 @@ if not os.path.isdir(subjects_dir):
 # ADVANCED
 # --------
 #
-# ``l_trans_bandwidth`` : float | 'auto'
+# ``l_trans_bandwidth`` : float | 'auto'
 #    A float that specifies the transition bandwidth of the
 #    highpass filter. By default it's `'auto'` and uses default mne
 #    parameters.
 
 l_trans_bandwidth = 'auto'
 
-#  ``h_trans_bandwidth`` : float | 'auto'
+#  ``h_trans_bandwidth`` : float | 'auto'
 #    A float that specifies the transition bandwidth of the
 #    lowpass filter. By default it's `'auto'` and uses default mne
 #    parameters.
