@@ -46,6 +46,7 @@ for ss, subject in enumerate(subjects):
             
         raw.info['subject_info'] = dict(id=ss)
 
+        # create basename
         bids_basename = make_bids_basename(subject=subject, task=task)
        
         # read bad channels
@@ -69,16 +70,7 @@ for ss, subject in enumerate(subjects):
         
         # read events
         if task == 'empty':    
-            
-            # when anonymize, but SB name as session
-            er_bids_basename = make_bids_basename(subject='emptyroom', task='noise', session=subject)
-            
-            # when not anonymize, session has to be meas_date
-            if do_anonymize == False:
-                er_date = datetime.fromtimestamp(
-                    raw.info['meas_date'][0]).strftime('%Y%m%d')
-                er_bids_basename = make_bids_basename(subject='emptyroom', task='noise', session=er_date)
-                
+            er_bids_basename = make_bids_basename(subject='emptyroom', task='noise', prefix=subject)       
             write_raw_bids(raw, er_bids_basename,
                            output_path=bids_root,
                            overwrite=True) 
