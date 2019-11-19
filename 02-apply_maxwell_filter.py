@@ -28,7 +28,7 @@ def frequency_filter(subject):
 
     meg_subject_dir = op.join(config.meg_dir, subject)
 
-    for run in config.runs:      
+    for run in config.runs:
         if config.use_maxwell_filter:
             extension = run + '_sss_raw'
         else:

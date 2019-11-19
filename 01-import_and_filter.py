@@ -47,12 +47,12 @@ def run_maxwell_filter(subject):
         extension = run + '_raw'
         raw_fname_in = op.join(meg_subject_dir,
                                config.base_fname.format(**locals()))
-        
+
         if config.use_maxwell_filter:
             extension = run + '_sss_raw'
         else:
             extension = run + '_nosss_raw'
-                
+
         raw_fname_out = op.join(meg_subject_dir,
                                 config.base_fname.format(**locals()))
 
@@ -63,23 +63,22 @@ def run_maxwell_filter(subject):
             warn('Run %s not found for subject %s ' %
                  (raw_fname_in, subject))
             continue
-        
+
         # read raw data
         raw = mne.io.read_raw_fif(raw_fname_in,
                                   allow_maxshield=config.allow_maxshield,
                                   preload=True, verbose='error')
 
-
-        # add bad channels, using the annotations if found       
+        # add bad channels, using the annotations if found
         annotations_fname_out = op.join(meg_subject_dir,
-                                config.base_fname.format(**locals()))
+                                        config.base_fname.format(**locals()))
         pre, ext = op.splitext(annotations_fname_out)
         annotations_fname_in = pre + '.csv'
-        
-        if op.exists(annotations_fname_in): 
+
+        if op.exists(annotations_fname_in):
             annotations = mne.read.annotations(annotations_fname_in)
             raw.set_annotations(annotations)
-            print("Reading bads from annotations")    
+            print("Reading bads from annotations")
             print("bads: ", raw.info['bads'])
         else:
             # read bad channels for run from config
@@ -88,9 +87,9 @@ def run_maxwell_filter(subject):
             else:
                 bads = config.bads[subject]
                 raw.info['bads'] = bads
-            print("no annotations found, reading bads from config")    
+            print("no annotations found, reading bads from config")
             print("bads: ", raw.info['bads'])
-        
+
         # rename / retype channels
         if config.set_channel_types is not None:
             raw.set_channel_types(config.set_channel_types)
@@ -100,15 +99,15 @@ def run_maxwell_filter(subject):
         # Fix coil types (does something only if needed). See:
         # https://martinos.org/mne/stable/generated/mne.channels.fix_mag_coil_types.html  # noqa
         raw.fix_mag_coil_types()
-      
+
         if config.use_maxwell_filter:
-             
+
             info = mne.io.read_info(raw_fname_in)
             destination = info['dev_head_t']
-        
+
             if config.mf_st_duration:
                 print('    st_duration=%d' % (config.mf_st_duration,))
-    
+
             raw_sss = mne.preprocessing.maxwell_filter(
                 raw,
                 calibration=config.mf_cal_fname,
@@ -116,30 +115,30 @@ def run_maxwell_filter(subject):
                 st_duration=config.mf_st_duration,
                 origin=config.mf_head_origin,
                 destination=destination)
-    
+
             raw_sss.save(raw_fname_out, overwrite=True)
-    
-            
+
             if config.plot:
                 # plot maxfiltered data
-                raw_sss.plot(n_channels=50, butterfly=True, group_by='position')
- 
+                raw_sss.plot(n_channels=50, butterfly=True,
+                             group_by='position')
+
         else:
-            
+
             raw.save(raw_fname_out, overwrite=True)
             print('')
-            print('WARNING: The data were not maxfiltered. ' 
+            print('WARNING: The data were not maxfiltered. '
                   'They will be distorted')
-            print('Set config.use_maxwell_filter to True and run this script again')
+            print('Set config.use_maxwell_filter=True '
+                  'and run this script again')
             print('')
-             
-        
+
             if config.plot:
-                # plot non-maxfiltered data               
+                # plot non-maxfiltered data
                 raw.plot(n_channels=50, butterfly=True, group_by='position')
-    
-    n_raws += 1 
-    
+
+    n_raws += 1
+
     if n_raws == 0:
         raise ValueError('No input raw data found.')
 

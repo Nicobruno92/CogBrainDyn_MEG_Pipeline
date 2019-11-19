@@ -50,7 +50,7 @@ def visual_inspection(subject):
                                config.base_fname.format(**locals()))
         extension = run + '_annotations'
         annotations_fname_out = op.join(meg_subject_dir,
-                                config.base_fname.format(**locals()))
+                                        config.base_fname.format(**locals()))
         pre, ext = op.splitext(annotations_fname_out)
         annotations_fname_out = pre + '.csv'
 
