@@ -26,8 +26,8 @@ fetch: fetch_test
 	mkdir -p data/MEG/SB12/ && wget https://osf.io/u7cj2/download -cO data/MEG/SB12/SB12_Localizer_raw.fif
 
 sensor:
-	$(PYTHON) 01-import_and_filter.py
-	$(PYTHON) 02-apply_maxwell_filter.py
+	$(PYTHON) 01-import_and_maxwell_filter.py
+	$(PYTHON) 02-apply_frequency_filter.py
 	$(PYTHON) 03-extract_events.py
 	$(PYTHON) 04-make_epochs.py
 	$(PYTHON) 05a-run_ica.py
