@@ -34,10 +34,7 @@ def run_epochs(subject):
     print("  Loading raw data")
 
     for run in config.runs:
-        if config.use_maxwell_filter:
-            extension = run + '_sss_raw'
-        else:
-            extension = run + '_filt_raw'
+        extension = run + '_filt_raw'
 
         raw_fname_in = op.join(meg_subject_dir,
                                config.base_fname.format(**locals()))
@@ -48,8 +45,6 @@ def run_epochs(subject):
 
         events = mne.read_events(eve_fname)
         events_list.append(events)
-
-
         raw_list.append(raw)
 
     print('  Concatenating runs')

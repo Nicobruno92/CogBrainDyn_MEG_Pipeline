@@ -16,7 +16,7 @@ import numpy as np
 #   If running the scripts from a notebook or spyder
 #   run %matplotlib qt in the command line to get the plots in extra windows
 
-plot = True
+plot = False
 
 
 ###############################################################################
@@ -30,9 +30,10 @@ plot = True
 # ~~~~~~~
 # >>> study_path = '../MNE-sample-data/'
 # or
-# >>> study_path = '/Users/sophie/repos/ExampleData/'
+# >>> study_path = '/neurospin/meg/meg_tmp/
+#                   Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/'
 
-study_path = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/'
+study_path = 'data/'
 
 # ``subjects_dir`` : str
 #   The ``subjects_dir`` contains the MRI files for all subjects.
@@ -65,10 +66,10 @@ study_name = 'Localizer'
 #   subjects_list = ['SB01']
 
 # To use all subjects use
-subjects_list = ['SB01', 'SB02', 'SB04', 'SB05', 'SB06', 'SB07',
-                 'SB08', 'SB09', 'SB10', 'SB11', 'SB12']
-# else for speed and fast test you can use:
+# subjects_list = ['SB01', 'SB02', 'SB04', 'SB05', 'SB06', 'SB07',
+#                  'SB08', 'SB09', 'SB10', 'SB11', 'SB12']
 
+# else for speed and fast test you can use:
 subjects_list = ['SB01', 'SB02']
 
 # ``exclude_subjects`` : list of str
@@ -544,6 +545,7 @@ def default_reject_comps():
 
 rejcomps_man = defaultdict(default_reject_comps)
 
+
 # ``ica_ctps_ecg_threshold``: float
 #    The threshold parameter passed to `find_bads_ecg` method.
 
@@ -651,7 +653,8 @@ smooth = 10
 
 base_fname_trans = '{subject}-trans.fif'
 
-fsaverage_vertices = [np.arange(10242), np.arange(10242)]
+# XXX not needed
+# fsaverage_vertices = [np.arange(10242), np.arange(10242)]
 
 if not os.path.isdir(study_path):
     os.mkdir(study_path)
