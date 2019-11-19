@@ -32,7 +32,7 @@ plot = False
 # or
 # >>> study_path = '/Users/sophie/repos/ExampleData/'
 
-study_path = 'data/'
+study_path = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/'
 
 # ``subjects_dir`` : str
 #   The ``subjects_dir`` contains the MRI files for all subjects.
@@ -69,7 +69,7 @@ subjects_list = ['SB01', 'SB02', 'SB04', 'SB05', 'SB06', 'SB07',
                  'SB08', 'SB09', 'SB10', 'SB11', 'SB12']
 # else for speed and fast test you can use:
 
-subjects_list = ['SB01']
+subjects_list = ['SB01', 'SB02']
 
 # ``exclude_subjects`` : list of str
 #   Now you can specify subjects to exclude from the group study:
@@ -80,7 +80,10 @@ subjects_list = ['SB01']
 # a participant (e.g. too many movements, missing blocks, aborted experiment,
 # did not understand the instructions, etc, ...)
 
-exclude_subjects = []
+exclude_subjects = ['SB01']
+subjects_list = list(set(subjects_list) - set(exclude_subjects))
+subjects_list.sort()
+
 
 # ``runs`` : list of str
 #   Define the names of your ``runs``
@@ -146,10 +149,31 @@ base_fname = '{subject}_' + study_name + '{extension}.fif'
 # the same sensors are noisy across all runs.
 
 bads = defaultdict(list)
-bads['SB01'] = ['MEG1723', 'MEG1722']
-bads['SB04'] = ['MEG0543', 'MEG2333']
-bads['SB06'] = ['MEG2632', 'MEG2033']
 
+# either put the bad channels here directly
+#bads['SB01'] = ['MEG1723', 'MEG1722']
+#bads['SB04'] = ['MEG0543', 'MEG2333']
+#bads['SB06'] = ['MEG2632', 'MEG2033']
+
+# or read bad channels from textfile in the subject's data folder, named
+# bad_channels.txt
+import re
+for subject in subjects_list:
+    bad_chans_file_name = os.path.join(meg_dir,subject,'bad_channels.txt')
+    bad_chans_file = open(bad_chans_file_name,"r") 
+    bad_chans = bad_chans_file.readlines()
+    bad_chans_file.close()
+
+    for i in  bad_chans:            
+        if study_name in i:
+            SBbads = re.findall(r'\d+|\d+.\d+', i)
+    if SBbads:
+        for b, bad in  enumerate(SBbads):
+            SBbads[b] = 'MEG' + str(bad)
+    bads[subject]=SBbads
+    del SBbads
+    
+del subject
 
 ###############################################################################
 # DEFINE ADDITIONAL CHANNELS
@@ -524,6 +548,10 @@ rejcomps_man = defaultdict(default_reject_comps)
 
 ica_ctps_ecg_threshold = 0.1
 
+# ``ica_ctps_eog_threshold``: float
+#    The threshold parameter passed to `find_bads_eog` method.
+
+ica_ctps_eog_threshold = 3.
 ###############################################################################
 # DECODING
 # --------
@@ -634,14 +662,14 @@ if not os.path.isdir(subjects_dir):
 # ADVANCED
 # --------
 #
-# ``l_trans_bandwidth`` : float | 'auto'
+# ``l_trans_bandwidth`` : float | 'auto'
 #    A float that specifies the transition bandwidth of the
 #    highpass filter. By default it's `'auto'` and uses default mne
 #    parameters.
 
 l_trans_bandwidth = 'auto'
 
-#  ``h_trans_bandwidth`` : float | 'auto'
+#  ``h_trans_bandwidth`` : float | 'auto'
 #    A float that specifies the transition bandwidth of the
 #    lowpass filter. By default it's `'auto'` and uses default mne
 #    parameters.
