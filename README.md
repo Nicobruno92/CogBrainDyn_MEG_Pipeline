@@ -17,7 +17,7 @@ First, you need to make sure you have mne-python installed and working on your s
 
 Get the scripts through git:
 
-	$ git clone https://github.com/mne-tools/mne-study-template.git
+	$ git clone https://github.com/brainthemind/CogBrainDyn_MEG_Pipeline.git
 	
 If you do not know how to use git, download the scripts [here](https://github.com/mne-tools/mne-study-template/archive/master.zip). 
 
@@ -65,8 +65,9 @@ See the comments for explanations and recommendations.
 | Script | Description |
 |:-----------|:----------------------------------------------------------|
 | [config.py](config.py) | The only file you need to modify in principle. This file contain all your parameters. |
-| [01-frequency_filtering.py](01-frequency_filtering.py) | Read raw data and apply lowpass or/and highpass filtering. |
-| [02-maxwell_filtering.py](02-maxwell_filtering_sss.py) | Run maxfilter and do lowpass filter at 40 Hz. |
+| [00-visual_inspection.py](00-visual_inspection.py) | Read raw data and plot it to inspect bad channels. 
+| [01-import_and_maxwell_filter.py](01-import_and_maxwell_filter.py) | Read raw data and apply maxwell filter. |
+| [02-apply_frequency_filter.py](02-apply_frequency_filter.py) | Apply high- and lowpass filter to the continuous data. |
 | [03-extract_events.py](03-extract_events.py) | Extract events or annotations or markers from the data and save it to disk. Uses events from stimulus channel STI101. |
 | [04-make_epochs.py](04-make_epochs.py) | Extract epochs. |
 | [05a-run_ica.py](05a-run_ica.py) | Run Independant Component Analysis (ICA) for artifact correction. |
