@@ -22,11 +22,8 @@ def run_ssp(subject):
     print("  Loading one run to compute SSPs")
 
     # compute SSP on first run of raw
-    run = config.runs[0]
-    if config.use_maxwell_filter:
-        extension = run + '_sss_raw'
-    else:
-        extension = run + '_filt_raw'
+    run = config.runs[0]    
+    extension = run + '_filt_raw'
     raw_fname_in = op.join(meg_subject_dir,
                            config.base_fname.format(**locals()))
 
