@@ -16,7 +16,7 @@ import numpy as np
 #   If running the scripts from a notebook or spyder
 #   run %matplotlib qt in the command line to get the plots in extra windows
 
-plot = True
+plot = False
 
 
 ###############################################################################
@@ -30,9 +30,10 @@ plot = True
 # ~~~~~~~
 # >>> study_path = '../MNE-sample-data/'
 # or
-# >>> study_path = '/neurospin/meg/meg_tmp/Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/'
+# >>> study_path = '/neurospin/meg/meg_tmp/
+#                   Dynacomp_Ciuciu_2011/2019_MEG_Pipeline/'
 
-study_path = '/data/'
+study_path = 'data/'
 
 # ``subjects_dir`` : str
 #   The ``subjects_dir`` contains the MRI files for all subjects.
