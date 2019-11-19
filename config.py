@@ -16,7 +16,7 @@ import numpy as np
 #   If running the scripts from a notebook or spyder
 #   run %matplotlib qt in the command line to get the plots in extra windows
 
-plot = False
+plot = True
 
 
 ###############################################################################
@@ -180,6 +180,17 @@ del subject
 # --------------------------
 # needed for 01-import_and_filter.py
 
+# ``set_channel_types``: dict
+#   Here you define types of channels to pick later.
+#
+# Example
+# ~~~~~~~
+# >>> set_channel_types = {'EEG061': 'eog', 'EEG062': 'eog',
+#                          'EEG063': 'ecg', 'EEG064': 'misc'}
+
+set_channel_types = None
+
+
 # ``rename_channels`` : dict rename channels
 #    Here you name or replace extra channels that were recorded, for instance
 #    EOG, ECG.
@@ -191,16 +202,6 @@ del subject
 #                        'EEG063': 'ECG063'}
 
 rename_channels = None
-
-# ``set_channel_types``: dict
-#   Here you define types of channels to pick later.
-#
-# Example
-# ~~~~~~~
-# >>> set_channel_types = {'EEG061': 'eog', 'EEG062': 'eog',
-#                          'EEG063': 'ecg', 'EEG064': 'misc'}
-
-set_channel_types = None
 
 ###############################################################################
 # FREQUENCY FILTERING
@@ -321,8 +322,8 @@ mf_head_origin = 'auto'
 # At NeuroSpin: ct_sparse and sss_call are on the meg_tmp server
 
 cal_files_path = os.path.join(study_path, 'system_calibration_files')
-mf_ctc_fname = os.path.join(cal_files_path, 'ct_sparse_nspn.fif')
-mf_cal_fname = os.path.join(cal_files_path, 'sss_cal_nspn.dat')
+mf_ctc_fname = os.path.join(cal_files_path, 'ct_sparse_nsp_2017.fif')
+mf_cal_fname = os.path.join(cal_files_path, 'sss_cal_nsp_2017.dat')
 
 # Despite all possible care to avoid movements in the MEG, the participant
 # will likely slowly drift down from the Dewar or slightly shift the head

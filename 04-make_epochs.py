@@ -96,6 +96,7 @@ def run_epochs(subject):
         epochs.plot()
         epochs.plot_image(combine='gfp', group_by='type', sigma=2.,
                           cmap="YlGnBu_r")
+        epochs.plot_drop_log()
 
 
 # Here we use fewer N_JOBS to prevent potential memory problems
