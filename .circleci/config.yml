@@ -20,30 +20,25 @@ jobs:
               - pip-cache
 
         - run:
-            name: Spin up Xvfb
+            name: Get conda running
             command: |
-              /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render -noreset;
-
-        # https://github.com/ContinuumIO/anaconda-issues/issues/9190#issuecomment-386508136
-        # https://github.com/golemfactory/golem/issues/1019
-        - run:
-            name: Fix libgcc_s.so.1 pthread_cancel bug
-            command: |
-              sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6 qt5-default
-
-        - run:
-            name: Get Anaconda running
-            command: |
-              wget -q http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh;
+              wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh;
               chmod +x ~/miniconda.sh;
               ~/miniconda.sh -b -p ~/miniconda;
-              export export PATH=~/miniconda/bin:$PATH;
-              conda update --yes --quiet conda;
-              curl -O https://raw.githubusercontent.com/mne-tools/mne-python/master/environment.yml
-              # sed -i '/pylsl/d' ./environment.yml
-              conda env create -f environment.yml
-              source activate mne
-              python -c "import mne; mne.sys_info()"
+              echo "export PATH=~/miniconda/bin:$PATH" >> $BASH_ENV;
+
+        - run:
+            name: Install dependencies in conda base environment
+            command: |
+              conda update -n base -c defaults conda
+              pip install numpy scipy matplotlib nibabel
+              pip install -U scikit-learn
+              pip install --upgrade https://api.github.com/repos/mne-tools/mne-python/zipball/master
+              git clone https://github.com/mne-tools/mne-bids.git --depth 1
+              cd mne-bids
+              pip install -e .
+              cd ..
+
 
         - save_cache:
             key: pip-cache
