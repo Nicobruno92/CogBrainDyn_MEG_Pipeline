@@ -122,7 +122,7 @@ base_fname = '{subject}_' + study_name + '{extension}.fif'
 ###############################################################################
 # BAD CHANNELS
 # ------------
-# needed for 01-import_and_filter.py
+# needed for 01-import_and_maxwell_filter.py
 
 # ``bads`` : dict of list | dict of dict
 #    Bad channels are noisy sensors that *must* to be listed
@@ -179,7 +179,7 @@ del subject
 ###############################################################################
 # DEFINE ADDITIONAL CHANNELS
 # --------------------------
-# needed for 01-import_and_filter.py
+# needed for 01-import_and_maxwell_filter.py
 
 # ``set_channel_types``: dict
 #   Here you define types of channels to pick later.
@@ -207,7 +207,7 @@ rename_channels = None
 ###############################################################################
 # FREQUENCY FILTERING
 # -------------------
-# done in 01-import_and_filter.py
+# done in 01-import_and_maxwell_filter.py
 
 # Good Practice / Advice
 # ~~~~~~~~~~~~~~~~~~~~~~
