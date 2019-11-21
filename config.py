@@ -66,11 +66,11 @@ study_name = 'Localizer'
 #   subjects_list = ['SB01']
 
 # To use all subjects use
-# subjects_list = ['SB01', 'SB02', 'SB04', 'SB05', 'SB06', 'SB07',
+# subjects_list = ['SB02', 'SB04', 'SB05', 'SB06', 'SB07',
 #                  'SB08', 'SB09', 'SB10', 'SB11', 'SB12']
 
 # else for speed and fast test you can use:
-subjects_list = ['SB01', 'SB02']
+subjects_list = ['SB02', 'SB04']
 
 # ``exclude_subjects`` : list of str
 #   Now you can specify subjects to exclude from the group study:
@@ -81,7 +81,7 @@ subjects_list = ['SB01', 'SB02']
 # a participant (e.g. too many movements, missing blocks, aborted experiment,
 # did not understand the instructions, etc, ...)
 
-exclude_subjects = ['SB01']
+exclude_subjects = ['']
 subjects_list = list(set(subjects_list) - set(exclude_subjects))
 subjects_list.sort()
 
@@ -152,7 +152,7 @@ base_fname = '{subject}_' + study_name + '{extension}.fif'
 bads = defaultdict(list)
 
 # either put the bad channels here directly
-bads['SB01'] = ['MEG1723', 'MEG1722']
+bads['SB02'] = ['MEG1723', 'MEG1722']
 bads['SB04'] = ['MEG0543', 'MEG2333']
 bads['SB06'] = ['MEG2632', 'MEG2033']
 
