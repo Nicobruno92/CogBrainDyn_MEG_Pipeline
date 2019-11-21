@@ -189,7 +189,9 @@ def apply_ica(subject):
         fig = ica.plot_overlay(raw, show=config.plot)
         report.add_figs_to_section(fig, captions=ch_type.upper() +
                                    ' - ALL(epochs) - Corrections')
-
+        
+        report.save(report_fname, overwrite=True, open_browser=False)
+        
         if config.plot:
             epochs.plot_image(combine='gfp', group_by='type', sigma=2.,
                               cmap="YlGnBu_r", show=config.plot)
