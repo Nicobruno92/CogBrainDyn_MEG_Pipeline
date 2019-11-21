@@ -100,6 +100,8 @@ def apply_ica(subject):
             ecg_inds, scores = \
                 ica.find_bads_ecg(ecg_epochs, method='ctps',
                                   threshold=config.ica_ctps_ecg_threshold)
+            ica.exclude.extend(ecg_inds)
+            
             del ecg_epochs
 
             report_fname = \
@@ -111,21 +113,18 @@ def apply_ica(subject):
 
             # Plot r score
             report.add_figs_to_section(ica.plot_scores(scores,
-                                                       exclude=ecg_inds,
                                                        show=config.plot),
                                        captions=ch_type.upper() + ' - ECG - ' +
                                        'R scores')
 
             # Plot source time course
             report.add_figs_to_section(ica.plot_sources(ecg_average,
-                                                        exclude=ecg_inds,
                                                         show=config.plot),
                                        captions=ch_type.upper() + ' - ECG - ' +
                                        'Sources time course')
 
             # Plot source time course
             report.add_figs_to_section(ica.plot_overlay(ecg_average,
-                                                        exclude=ecg_inds,
                                                         show=config.plot),
                                        captions=ch_type.upper() + ' - ECG - ' +
                                        'Corrections')
@@ -151,22 +150,22 @@ def apply_ica(subject):
             eog_inds, scores = \
                 ica.find_bads_eog(eog_epochs,
                                   threshold=config.ica_ctps_eog_threshold)
+            ica.exclude.extend(eog_inds)
+            
             del eog_epochs
-
-            params = dict(exclude=eog_inds, show=config.plot)
-
+            
             # Plot r score
-            report.add_figs_to_section(ica.plot_scores(scores, **params),
+            report.add_figs_to_section(ica.plot_scores(scores, show=config.plot),
                                        captions=ch_type.upper() + ' - EOG - ' +
                                        'R scores')
 
             # Plot source time course
-            report.add_figs_to_section(ica.plot_sources(eog_average, **params),
+            report.add_figs_to_section(ica.plot_sources(eog_average, show=config.plot),
                                        captions=ch_type.upper() + ' - EOG - ' +
                                        'Sources time course')
 
             # Plot source time course
-            report.add_figs_to_section(ica.plot_overlay(eog_average, **params),
+            report.add_figs_to_section(ica.plot_overlay(eog_average, show=config.plot),
                                        captions=ch_type.upper() + ' - EOG - ' +
                                        'Corrections')
 
@@ -175,18 +174,19 @@ def apply_ica(subject):
         else:
             print('no EOG channel is present. Cannot automate ICAs component '
                   'detection for EOG!')
-
-        ica_reject = (list(ecg_inds) + list(eog_inds) +
-                      list(config.rejcomps_man[subject][ch_type]))
+            
+        rej_man = list(config.rejcomps_man[subject][ch_type])
+        .extend(rej_man)
+        
 
         # now reject the components
-        print('Rejecting from %s: %s' % (ch_type, ica_reject))
-        epochs = ica.apply(epochs, exclude=ica_reject)
+        print('Rejecting from %s: %s' % (ch_type, ica.exclude))
+        epochs = ica.apply(epochs)
 
         print('Saving cleaned epochs')
         epochs.save(fname_out)
 
-        fig = ica.plot_overlay(raw, exclude=ica_reject, show=config.plot)
+        fig = ica.plot_overlay(raw, show=config.plot)
         report.add_figs_to_section(fig, captions=ch_type.upper() +
                                    ' - ALL(epochs) - Corrections')
 
