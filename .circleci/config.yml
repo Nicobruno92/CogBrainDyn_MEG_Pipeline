@@ -49,7 +49,7 @@ jobs:
         - run:
             name: Check installation
             command: |
-               source activate mne
+               mne --version
                which python
                python -c "import mne; mne.sys_info()"
 
