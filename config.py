@@ -152,29 +152,29 @@ base_fname = '{subject}_' + study_name + '{extension}.fif'
 bads = defaultdict(list)
 
 # either put the bad channels here directly
-#bads['SB01'] = ['MEG1723', 'MEG1722']
-#bads['SB04'] = ['MEG0543', 'MEG2333']
-#bads['SB06'] = ['MEG2632', 'MEG2033']
+bads['SB01'] = ['MEG1723', 'MEG1722']
+bads['SB04'] = ['MEG0543', 'MEG2333']
+bads['SB06'] = ['MEG2632', 'MEG2033']
 
 # or read bad channels from textfile in the subject's data folder, named
 # bad_channels.txt
-import re
-for subject in subjects_list:
-    bad_chans_file_name = os.path.join(meg_dir,subject,'bad_channels.txt')
-    bad_chans_file = open(bad_chans_file_name,"r") 
-    bad_chans = bad_chans_file.readlines()
-    bad_chans_file.close()
-
-    for i in  bad_chans:            
-        if study_name in i:
-            SBbads = re.findall(r'\d+|\d+.\d+', i)
-    if SBbads:
-        for b, bad in  enumerate(SBbads):
-            SBbads[b] = 'MEG' + str(bad)
-    bads[subject]=SBbads
-    del SBbads
-    
-del subject
+#import re
+#for subject in subjects_list:
+#    bad_chans_file_name = os.path.join(meg_dir,subject,'bad_channels.txt')
+#    bad_chans_file = open(bad_chans_file_name,"r") 
+#    bad_chans = bad_chans_file.readlines()
+#    bad_chans_file.close()
+#
+#    for i in  bad_chans:            
+#        if study_name in i:
+#            SBbads = re.findall(r'\d+|\d+.\d+', i)
+#    if SBbads:
+#        for b, bad in  enumerate(SBbads):
+#            SBbads[b] = 'MEG' + str(bad)
+#    bads[subject]=SBbads
+#    del SBbads
+#    
+#del subject
 
 ###############################################################################
 # DEFINE ADDITIONAL CHANNELS
