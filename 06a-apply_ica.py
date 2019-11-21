@@ -176,7 +176,7 @@ def apply_ica(subject):
                   'detection for EOG!')
             
         rej_man = list(config.rejcomps_man[subject][ch_type])
-        .extend(rej_man)
+        ica.exclude.extend(rej_man)
         
 
         # now reject the components
