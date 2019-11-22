@@ -49,8 +49,7 @@ jobs:
         - run:
             name: Get data and run test
             command: |
-
-        make test
+               make test
 
         # Save the outputs
         - store_artifacts:
