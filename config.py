@@ -551,10 +551,11 @@ rejcomps_man = defaultdict(default_reject_comps)
 
 ica_ctps_ecg_threshold = 0.1
 
-# ``ica_ctps_eog_threshold``: float
+# ``ica_correlation_eog_threshold``: float
 #    The threshold parameter passed to `find_bads_eog` method.
 
-ica_ctps_eog_threshold = 3.
+ica_correlation_eog_threshold = 3.
+
 ###############################################################################
 # DECODING
 # --------
