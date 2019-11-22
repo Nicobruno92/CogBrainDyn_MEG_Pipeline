@@ -48,6 +48,6 @@ source:
 report:
 	$(PYTHON) 99-make_reports.py
 
-test: fetch_test sensor
+test: fetch_test 
 
 all: fetch sensor source report

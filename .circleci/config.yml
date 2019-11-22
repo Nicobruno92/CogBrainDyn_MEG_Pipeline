@@ -2,8 +2,7 @@ version: 2
 jobs:
     build_docs:
       docker:
-        # 3.6-jessie is too new for conda
-        - image: circleci/python:3.6-jessie
+         - image: circleci/python:3.6.8-stretch
       steps:
         - checkout
         - run:
@@ -32,20 +31,6 @@ jobs:
             command: |
               sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6 qt5-default
 
-        - run:
-            name: Get Anaconda running
-            command: |
-              wget -q http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh;
-              chmod +x ~/miniconda.sh;
-              ~/miniconda.sh -b -p ~/miniconda;
-              export export PATH=~/miniconda/bin:$PATH;
-              conda update --yes --quiet conda;
-              curl -O https://raw.githubusercontent.com/mne-tools/mne-python/master/environment.yml
-              # sed -i '/pylsl/d' ./environment.yml
-              conda env create -f environment.yml
-              source activate mne
-              python -c "import mne; mne.sys_info()"
-
         - save_cache:
             key: pip-cache
             paths:
@@ -55,7 +40,8 @@ jobs:
         - run:
             name: Check installation
             command: |
-               source activate mne
+
+               mne --version
                which python
                python -c "import mne; mne.sys_info()"
 
@@ -63,7 +49,6 @@ jobs:
         - run:
             name: Get data and run test
             command: |
-               source activate mne
                make test
 
         # Save the outputs
@@ -73,6 +58,7 @@ jobs:
         - store_artifacts:
             path: doc/_build/html_stable/
             destination: stable
+
 
         # Store the cache
         - save_cache:

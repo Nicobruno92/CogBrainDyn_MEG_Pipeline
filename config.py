@@ -66,11 +66,11 @@ study_name = 'Localizer'
 #   subjects_list = ['SB01']
 
 # To use all subjects use
-# subjects_list = ['SB01', 'SB02', 'SB04', 'SB05', 'SB06', 'SB07',
+# subjects_list = ['SB02', 'SB04', 'SB05', 'SB06', 'SB07',
 #                  'SB08', 'SB09', 'SB10', 'SB11', 'SB12']
 
 # else for speed and fast test you can use:
-subjects_list = ['SB01', 'SB02']
+subjects_list = ['SB02', 'SB04']
 
 # ``exclude_subjects`` : list of str
 #   Now you can specify subjects to exclude from the group study:
@@ -81,7 +81,7 @@ subjects_list = ['SB01', 'SB02']
 # a participant (e.g. too many movements, missing blocks, aborted experiment,
 # did not understand the instructions, etc, ...)
 
-exclude_subjects = ['SB01']
+exclude_subjects = ['']
 subjects_list = list(set(subjects_list) - set(exclude_subjects))
 subjects_list.sort()
 
@@ -122,7 +122,7 @@ base_fname = '{subject}_' + study_name + '{extension}.fif'
 ###############################################################################
 # BAD CHANNELS
 # ------------
-# needed for 01-import_and_filter.py
+# needed for 01-import_and_maxwell_filter.py
 
 # ``bads`` : dict of list | dict of dict
 #    Bad channels are noisy sensors that *must* to be listed
@@ -152,34 +152,34 @@ base_fname = '{subject}_' + study_name + '{extension}.fif'
 bads = defaultdict(list)
 
 # either put the bad channels here directly
-#bads['SB01'] = ['MEG1723', 'MEG1722']
-#bads['SB04'] = ['MEG0543', 'MEG2333']
-#bads['SB06'] = ['MEG2632', 'MEG2033']
+bads['SB02'] = ['MEG1723', 'MEG1722']
+bads['SB04'] = ['MEG0543', 'MEG2333']
+bads['SB06'] = ['MEG2632', 'MEG2033']
 
 # or read bad channels from textfile in the subject's data folder, named
 # bad_channels.txt
-import re
-for subject in subjects_list:
-    bad_chans_file_name = os.path.join(meg_dir,subject,'bad_channels.txt')
-    bad_chans_file = open(bad_chans_file_name,"r") 
-    bad_chans = bad_chans_file.readlines()
-    bad_chans_file.close()
-
-    for i in  bad_chans:            
-        if study_name in i:
-            SBbads = re.findall(r'\d+|\d+.\d+', i)
-    if SBbads:
-        for b, bad in  enumerate(SBbads):
-            SBbads[b] = 'MEG' + str(bad)
-    bads[subject]=SBbads
-    del SBbads
-    
-del subject
+#import re
+#for subject in subjects_list:
+#    bad_chans_file_name = os.path.join(meg_dir,subject,'bad_channels.txt')
+#    bad_chans_file = open(bad_chans_file_name,"r") 
+#    bad_chans = bad_chans_file.readlines()
+#    bad_chans_file.close()
+#
+#    for i in  bad_chans:            
+#        if study_name in i:
+#            SBbads = re.findall(r'\d+|\d+.\d+', i)
+#    if SBbads:
+#        for b, bad in  enumerate(SBbads):
+#            SBbads[b] = 'MEG' + str(bad)
+#    bads[subject]=SBbads
+#    del SBbads
+#    
+#del subject
 
 ###############################################################################
 # DEFINE ADDITIONAL CHANNELS
 # --------------------------
-# needed for 01-import_and_filter.py
+# needed for 01-import_and_maxwell_filter.py
 
 # ``set_channel_types``: dict
 #   Here you define types of channels to pick later.
@@ -207,7 +207,7 @@ rename_channels = None
 ###############################################################################
 # FREQUENCY FILTERING
 # -------------------
-# done in 01-import_and_filter.py
+# done in 01-import_and_maxwell_filter.py
 
 # Good Practice / Advice
 # ~~~~~~~~~~~~~~~~~~~~~~
