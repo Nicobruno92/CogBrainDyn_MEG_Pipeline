@@ -89,7 +89,7 @@ def run_epochs(subject):
 
     if config.plot:
         epochs.plot()
-        epochs.plot_image(combine='gfp', group_by='type', sigma=2.,
+        epochs.plot_image(combine='gfp', sigma=2.,
                           cmap="YlGnBu_r")
         epochs.plot_drop_log()
 

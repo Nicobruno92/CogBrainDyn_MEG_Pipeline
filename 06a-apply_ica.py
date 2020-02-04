@@ -149,7 +149,8 @@ def apply_ica(subject):
             eog_average = eog_epochs.average()
             eog_inds, scores = \
                 ica.find_bads_eog(eog_epochs,
-                                  threshold=config.ica_ctps_eog_threshold)
+                                  threshold=config.ica_correlation_eog_threshold)
+
             ica.exclude.extend(eog_inds)
             
             del eog_epochs
@@ -176,8 +177,7 @@ def apply_ica(subject):
                   'detection for EOG!')
             
         rej_man = list(config.rejcomps_man[subject][ch_type])
-        .extend(rej_man)
-        
+        ica.exclude.extend(rej_man)
 
         # now reject the components
         print('Rejecting from %s: %s' % (ch_type, ica.exclude))
@@ -189,9 +189,11 @@ def apply_ica(subject):
         fig = ica.plot_overlay(raw, show=config.plot)
         report.add_figs_to_section(fig, captions=ch_type.upper() +
                                    ' - ALL(epochs) - Corrections')
-
+        
+        report.save(report_fname, overwrite=True, open_browser=False)
+        
         if config.plot:
-            epochs.plot_image(combine='gfp', group_by='type', sigma=2.,
+            epochs.plot_image(combine='gfp', sigma=2.,
                               cmap="YlGnBu_r", show=config.plot)
 
 

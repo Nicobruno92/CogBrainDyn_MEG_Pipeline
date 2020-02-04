@@ -4,7 +4,7 @@
 ===================================
 
 The data are imported for the first time.
-If you specified annotations (using script 00_visual_inspection.py), 
+If you specified annotations (using script 00_visual_inspection.py),
 the bad channels will be read from there.
 
 If  use_maxwell_filter=True in config, maxfilter will be applied,
@@ -19,10 +19,10 @@ The function loads machine-specific calibration files from the paths set for
 config.mf_ctc_fname  and config.mf_cal_fname.
 
 A file with the extension _sss_raw.fif will be saved per subject and run.
-If  use_maxwell_filter=False in config, maxfilter will be NOT applied. 
+If  use_maxwell_filter=False in config, maxfilter will be NOT applied.
 A file with the extension _nosss_raw.fif will be saved per subject and run.
-Important: If your data were recorded with internal active compensation 
-(MaxShield), you have to maxfilter them, otherwise they will be distorted. 
+Important: If your data were recorded with internal active compensation
+(MaxShield), you have to maxfilter them, otherwise they will be distorted.
 
 If config.plot = True plots raw data.
 """  # noqa: E501
@@ -101,8 +101,13 @@ def run_maxwell_filter(subject):
         raw.fix_mag_coil_types()
 
         if config.use_maxwell_filter:
+            # To match their processing, transform to the head position of the
+            # defined reference run
+            extension = config.runs[config.mf_reference_run] + '_raw'
+            refrun_in = op.join(meg_subject_dir,
+                                config.base_fname.format(**locals()))
 
-            info = mne.io.read_info(raw_fname_in)
+            info = mne.io.read_info(refrun_in)
             destination = info['dev_head_t']
 
             if config.mf_st_duration:
