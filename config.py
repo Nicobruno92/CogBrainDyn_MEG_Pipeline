@@ -533,7 +533,7 @@ use_ica = True
 #    that 1 every 5 sample is used by ICA solver. The higher the faster
 #    it is to run but the less data you have to compute a good ICA.
 
-ica_decim = 11
+ica_decim = 4
 
 
 # ``default_reject_comps`` : dict
